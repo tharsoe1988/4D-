@@ -92,7 +92,7 @@ def build_database(prizes_list):
 
 exact_db, sorted_db, group_to_codes, code_to_group, drawn_set, drawn_sorted_set = build_database(prizes_2026)
 
-user_input = st.text_input("Enter 4D digit(s) or Group (ဥပမာ - 5434):", "5434")
+user_input = st.text_input("Enter 4D digit(s) or Group (ဥပမာ - 6644):", "6644")
 
 if user_input:
     for query in [q.strip() for q in user_input.replace(",", " ").split() if q.strip()]:
