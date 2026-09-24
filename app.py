@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-import streamlit as st
-import requests
+from datetime import datetime
 
 # Singapore Pools နောက်ခံအရောင်နှင့် စတိုင်လ်များ သတ်မှတ်ခြင်း
 st.markdown(
@@ -31,8 +30,13 @@ st.markdown(
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
-st.title("🇸🇬 Singapore 4D Smart-Query Engine 🇲🇲")
-st.write("စေတနာကောင်းလျှင် ကံကောင်းမည်")
+st.title("🇸🇬 Singapore 4D Smart-Query Engine")
+
+# လက်ရှိရက်စွဲနှင့် အချိန်ကို ပြသပေးခြင်း
+current_date = datetime.now().strftime("%Y-%m-%d (%A)")
+st.markdown(f"📅 **ရက်စွဲ:** {current_date}")
+
+st.write("ထွက်ပြီးသားဆုများ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း (Online JSON)")
 
 JSON_URL = "https://raw.githubusercontent.com/tharsoe1988/4D-/main/prizes.json"
 
