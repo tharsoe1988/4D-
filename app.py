@@ -30,14 +30,14 @@ st.markdown(
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
-st.title("🇸🇬 Singapore 4D Smart-Query Engine")
+st.title("🇸🇬4D Smart-Query Engine🇲🇲")
 
 # Singapore အချိန် (UTC+8) အရ လက်ရှိရက်စွဲကို ရယူခြင်း
 sgt_time = datetime.now(timezone(timedelta(hours=8)))
 current_date = sgt_time.strftime("%Y-%m-%d (%A)")
 st.markdown(f"📅 **ရက်စွဲ:** {current_date}")
 
-st.write("ထွက်ပြီးသားဆုများ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း (Online JSON)")
+st.write("စေတနာကောင်းလျှင် ကံကောင်းမည်")
 
 JSON_URL = "https://raw.githubusercontent.com/tharsoe1988/4D-/main/prizes.json"
 
