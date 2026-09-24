@@ -31,8 +31,8 @@ st.markdown(
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
-st.title("🇸🇬 Singapore 4D Smart-Query Engine")
-st.write("Good Luck")
+st.title("🇸🇬 Singapore 4D Smart-Query Engine 🇲🇲")
+st.write("စေတနာကောင်းလျှင် ကံကောင်းမည်")
 
 JSON_URL = "https://raw.githubusercontent.com/tharsoe1988/4D-/main/prizes.json"
 
