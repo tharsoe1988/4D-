@@ -1,52 +1,25 @@
 import streamlit as st
-from collections import Counter
-import streamlit as st
 import requests
-
-# Singapore Pools နောက်ခံအရောင်နှင့် စတိုင်လ်များ သတ်မှတ်ခြင်း
-st.markdown(
-    """
-    <style>
-    /* အဓိက App နောက်ခံအရောင်ကို Singapore Pools အပြာရောင်သို့ ပြောင်းရန် */
-    .stApp {
-        background-color: #1a4480;
-        color: #ffffff;
-    }
-    
-    /* စာသားများနှင့် ခေါင်းစဉ်များကို ပိုမိုထင်ရှားစေရန် */
-    h1, h2, h3, p, label {
-        color: #ffffff !important;
-    }
-    
-    /* Input Box များကို ဒီဇိုင်းဆန်းသစ်ရန် */
-    .stTextInput input {
-        background-color: #ffffff;
-        color: #000000;
-        border-radius: 5px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
 st.title("🇸🇬 Singapore 4D Smart-Query Engine")
-st.write("ထွက်ပြီးသားဆုများ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း")
+st.write("ထွက်ပြီးသားဆုများ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း (Online JSON)")
 
-prizes_2026 = [
-    "3310", "3734", "4807", "2038", "3283", "0305", "3236", "5896", "0452", "7295", 
-    "4025", "9683", "2490", "7970", "7541", "1516", "2916", "5878", "9651", "4198", 
-    "4118", "5888", "1903", "1516", "4172", "3927", "4299", "4146", "0473", "7905", 
-    "5409", "5747", "8312", "0143", "8649", "2729", "8750", "2069", "4450", "7752", 
-    "8866", "7195", "8025", "2218", "3873", "8953", "9815", "2791", "9950", "7937", 
-    "1167", "2300", "6303", "3361", "5479", "7517", "0672", "2735", "0368", "7699", 
-    "2176", "7758", "1516", "9806", "1869", "2414", "5974", "0735", "1622", "5478", 
-    "4048", "4505", "9954", "0257", "5950", "5286", "1563", "6428", "4230", "0629", 
-    "5701", "6452", "2329", "4087", "9418", "0647", "9662", "5131", "6431", "8813", 
-    "5964", "3052", "0715", "5102", "7137", "2375", "6714", "6149", "4478", "3001", 
-    "9675", "1564", "0363", "9238", "4125", "9248", "8579"
-]
+JSON_URL = "https://raw.githubusercontent.com/tharsoe1988/4D-/main/prizes.json"
+
+@st.cache_data(ttl=60)
+def load_prizes():
+    try:
+        response = requests.get(JSON_URL)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get("prizes", [])
+    except Exception as e:
+        st.error(f"Error loading prizes: {e}")
+    return []
+
+prizes_2026 = load_prizes()
 
 original_grid = {
     "55": ["96", "99", "66"], "66": ["42", "44", "22"], "77": ["70", "77", "00"], 
@@ -60,9 +33,9 @@ original_grid = {
 group_order = ["55", "66", "77", "88", "99", "56", "57", "58", "59", "67", "68", "69", "78", "79", "89"]
 
 @st.cache_data
-def build_database():
-    drawn_set = set(prizes_2026)
-    drawn_sorted_set = {"".join(sorted(p)) for p in prizes_2026}
+def build_database(prizes_list):
+    drawn_set = set(prizes_list)
+    drawn_sorted_set = {"".join(sorted(p)) for p in prizes_list}
     exact_db, sorted_db, group_to_codes, code_to_group = {}, {}, {}, {}
     pairs_with_priority = {}
     for g in group_order:
@@ -89,7 +62,7 @@ def build_database():
                             code_to_group[code] = disp_g
     return exact_db, sorted_db, group_to_codes, code_to_group, drawn_set, drawn_sorted_set
 
-exact_db, sorted_db, group_to_codes, code_to_group, drawn_set, drawn_sorted_set = build_database()
+exact_db, sorted_db, group_to_codes, code_to_group, drawn_set, drawn_sorted_set = build_database(prizes_2026)
 
 user_input = st.text_input("Enter 4D digit(s) or Group (ဥပမာ - 5434):", "5434")
 
