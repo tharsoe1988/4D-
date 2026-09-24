@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # Singapore Pools နောက်ခံအရောင်နှင့် စတိုင်လ်များ သတ်မှတ်ခြင်း
 st.markdown(
@@ -32,8 +32,9 @@ st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="c
 
 st.title("🇸🇬 Singapore 4D Smart-Query Engine")
 
-# လက်ရှိရက်စွဲနှင့် အချိန်ကို ပြသပေးခြင်း
-current_date = datetime.now().strftime("%Y-%m-%d (%A)")
+# Singapore အချိန် (UTC+8) အရ လက်ရှိရက်စွဲကို ရယူခြင်း
+sgt_time = datetime.now(timezone(timedelta(hours=8)))
+current_date = sgt_time.strftime("%Y-%m-%d (%A)")
 st.markdown(f"📅 **ရက်စွဲ:** {current_date}")
 
 st.write("ထွက်ပြီးသားဆုများ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း (Online JSON)")
