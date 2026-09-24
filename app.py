@@ -1,5 +1,33 @@
 import streamlit as st
 from collections import Counter
+import streamlit as st
+import requests
+
+# Singapore Pools နောက်ခံအရောင်နှင့် စတိုင်လ်များ သတ်မှတ်ခြင်း
+st.markdown(
+    """
+    <style>
+    /* အဓိက App နောက်ခံအရောင်ကို Singapore Pools အပြာရောင်သို့ ပြောင်းရန် */
+    .stApp {
+        background-color: #1a4480;
+        color: #ffffff;
+    }
+    
+    /* စာသားများနှင့် ခေါင်းစဉ်များကို ပိုမိုထင်ရှားစေရန် */
+    h1, h2, h3, p, label {
+        color: #ffffff !important;
+    }
+    
+    /* Input Box များကို ဒီဇိုင်းဆန်းသစ်ရန် */
+    .stTextInput input {
+        background-color: #ffffff;
+        color: #000000;
+        border-radius: 5px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
