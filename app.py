@@ -1,5 +1,5 @@
 import streamlit as st
-import requests
+import pandas as pd
 from datetime import datetime, timezone, timedelta
 
 # Singapore Pools နောက်ခံအရောင်နှင့် စတိုင်လ်များ သတ်မှတ်ခြင်း
@@ -30,29 +30,38 @@ st.markdown(
 
 st.set_page_config(page_title="Singapore 4D Engine", page_icon="🔢", layout="centered")
 
-st.title("🇸🇬4D Smart-Query Engine🇲🇲")
+st.title("🇸🇬 Singapore 4D Smart-Query Engine")
 
 # Singapore အချိန် (UTC+8) အရ လက်ရှိရက်စွဲကို ရယူခြင်း
 sgt_time = datetime.now(timezone(timedelta(hours=8)))
 current_date = sgt_time.strftime("%Y-%m-%d (%A)")
 st.markdown(f"📅 **ရက်စွဲ:** {current_date}")
 
-st.write("စေတနာကောင်းလျှင် ကံကောင်းမည်")
+st.write("Excel ဖိုင် (`4D.xlsx`) နှင့် ချိတ်ဆက်ထားသော ဆုနံပါတ်များ စစ်ဆေးခြင်းနှင့် Candidate ရှာဖွေခြင်း")
 
-JSON_URL = "https://raw.githubusercontent.com/tharsoe1988/4D-/main/prizes.json"
-
-@st.cache_data(ttl=60)
-def load_prizes():
+# 4D.xlsx ဖိုင်မှ ဆုနံပါတ်များကို ဖတ်ယူခြင်း
+@st.cache_data
+def load_excel_prizes():
+    prizes_list = []
     try:
-        response = requests.get(JSON_URL)
-        if response.status_code == 200:
-            data = response.json()
-            return data.get("prizes", [])
+        xls = pd.ExcelFile("4D.xlsx")
+        for sheet in xls.sheet_names:
+            df = pd.read_excel(xls, sheet_name=sheet)
+            for col in df.columns:
+                for val in df[col].dropna():
+                    # 4 လုံးတွဲ နံပါတ်များကို စစ်ထုတ်ခြင်း
+                    val_str = str(val).strip()
+                    if val_str.endswith('.0'):
+                        val_str = val_str[:-2]
+                    if val_str.isdigit() and len(val_str) == 4:
+                        if val_str not in prizes_list:
+                            prizes_list.append(val_str)
     except Exception as e:
-        st.error(f"Error loading prizes: {e}")
-    return []
+        # Excel ဖိုင် မရှိသေးပါက သို့မဟုတ် Error ဖြစ်ပါက Default စာရင်းသုံးရန်
+        pass
+    return prizes_list
 
-prizes_2026 = load_prizes()
+prizes_2026 = load_excel_prizes()
 
 original_grid = {
     "55": ["96", "99", "66"], "66": ["42", "44", "22"], "77": ["70", "77", "00"], 
